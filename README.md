@@ -1,1 +1,1 @@
-"# gnmap2targets" 
+gnmap2targets script
