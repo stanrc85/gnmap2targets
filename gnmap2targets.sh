@@ -1,7 +1,7 @@
 #!/bin/bash
 #Gnmap files are parsed for common ports to generate individual IP lists for further testing or scanning.
 
-#Usage: ./nmap2targets.sh GNMAP_FILE
+#Usage: ./gnmap2targets.sh GNMAP_FILE
 #Output: Multiple txt files with IPs
 
 #Colors
