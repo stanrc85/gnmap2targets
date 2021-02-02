@@ -1,8 +1,8 @@
 #!/bin/bash
 #Gnmap files are parsed for common ports to generate individual IP lists for further testing or scanning.
 
-#Usage: ./gnmap2targets.sh GNMAP_FILE
-#Output: Multiple txt files with IPs
+#Usage: ./nmap2targets.sh GNMAP_FILE
+#Output: All associated NMAP results and multiple txt files with IPs
 
 #Colors
 NOCOLOR='\033[0m'
@@ -26,6 +26,9 @@ for service in ${servicelist[@]}
 do
 	cat $1 | grep "$service" | cut -d' ' -f2 > $scan-$service-hosts.txt
 	echo -e "${GREEN}[+] $(cat $scan-$service-hosts.txt | wc -l) $service hosts found.${NOCOLOR}"
+	if [ ! -s $scan-$service-hosts.txt ] ; then
+		rm $scan-$service-hosts.txt
+	fi
 done
 
 #Parse GNMAP to generate txt file with IP:PORT list for all web services
