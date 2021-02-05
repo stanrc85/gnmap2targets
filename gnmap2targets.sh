@@ -60,6 +60,8 @@ do
 		done	
 	fi
 done<"$input"
+cat $filename-web-hosts.txt | sort | uniq > sorted
+mv -f sorted $filename-web-hosts.txt 
 echo -e "${GREEN}[+] $webcount web services identified.\n[+] Saved to $filename-web-hosts.txt.${NOCOLOR}"
 
 echo -e "${GREEN}[+] Target lists complete.${NOCOLOR}"
