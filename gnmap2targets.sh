@@ -45,15 +45,13 @@ do
 		for port in $portlist
 		do
 			if [[ "$port" == *"open"* ]]; then
-				if [[ "$port" == *"http"* && "$port" != *"https"* && "$port" != *"ssl"* ]]; then
-					portopen=$(echo $port | cut -d'/' -f1)
-					echo "http://$ip:$portopen" >> $filename-web-hosts.txt
-					http_ports="$http_ports, $portopen"
-					((webcount++))
-				elif [[ "$port" == *"ssl"* || "$port" == *"https"* ]]; then
+				if [[ "$port" == *"ssl"* || "$port" == *"https"* ]]; then
 					portopen=$(echo $port | cut -d'/' -f1)
 					echo "https://$ip:$portopen" >> $filename-web-hosts.txt
-					http_ports="$http_ports, $portopen"
+					((webcount++))
+				elif [[ "$port" == *"http"* ]]; then
+					portopen=$(echo $port | cut -d'/' -f1)
+					echo "http://$ip:$portopen" >> $filename-web-hosts.txt
 					((webcount++))
 				fi
 			fi
