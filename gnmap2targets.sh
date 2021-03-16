@@ -21,7 +21,7 @@ fi
 echo -e "${GREEN}[+] $count live hosts found.${NOCOLOR}"
 
 #Parse results for common ports
-servicelist=(ssh telnet smtp sql smb dns snmp)
+servicelist=(ssh telnet smtp sql smb dns snmp domain)
 for service in ${servicelist[@]}
 do
 	cat $1 | grep "$service" | cut -d' ' -f2 > $scan-$service-hosts.txt
@@ -45,11 +45,12 @@ do
 		for port in $portlist
 		do
 			if [[ "$port" == *"open"* ]]; then
-				if [[ "$port" == *"ssl"* || "$port" == *"https"* ]]; then
+				protocol=$(echo $port | cut -d'/' -f5)
+				if [[ "$protocol" == "ssl"* || "$protocol" == "https"* ]]; then
 					portopen=$(echo $port | cut -d'/' -f1)
 					echo "https://$ip:$portopen" >> $filename-web-hosts.txt
 					((webcount++))
-				elif [[ "$port" == *"http"* ]]; then
+				elif [[ "$protocol" == "http"* ]]; then
 					portopen=$(echo $port | cut -d'/' -f1)
 					echo "http://$ip:$portopen" >> $filename-web-hosts.txt
 					((webcount++))
