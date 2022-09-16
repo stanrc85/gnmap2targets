@@ -11,7 +11,7 @@ GREEN='\033[0;32m'
 
 
 #Parse live host list. Exit if no live hosts found.
-scan=$(echo $1 | cut -d'.' -f1)
+scan=$(echo $1 | rev | cut -d'.' -f2- | rev)
 cat $1 | grep "Status: Up" | cut -d" " -f2 > $scan-live-hosts.txt 
 count=$(cat $scan-live-hosts.txt | wc -l)
 if [[ "$count" == 0 ]]; then
@@ -20,8 +20,9 @@ if [[ "$count" == 0 ]]; then
 fi
 echo -e "${GREEN}[+] $count live hosts found.${NOCOLOR}"
 
-#Parse results for common ports
+#Modify this list to look for ports/services (use port number or common NMAP service name)
 servicelist=(ssh telnet smtp sql smb dns snmp domain)
+#Parse results for selected ports/services
 for service in ${servicelist[@]}
 do
 	cat $1 | grep "$service" | cut -d' ' -f2 > $scan-$service-hosts.txt
@@ -34,7 +35,7 @@ done
 #Parse GNMAP to generate txt file with IP:PORT list for all web services
 input="$1"
 echo -e "${GREEN}[+] Reading file to parse HTTP/S services.${NOCOLOR}"
-filename=$( echo $1 | cut -d'.' -f1)
+filename=$( echo $1 | rev | cut -d'.' -f2- | rev)
 webcount=0
 while IFS= read -r line
 do
